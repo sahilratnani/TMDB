@@ -20,11 +20,11 @@ protocol ConnnectionServiceDelegate {
     
 }
 
-typealias CompletionHandler = (_ dictData: NSDictionary) -> Void
+typealias CompletionHandler = (_ dictData: Data) -> Void
 
 var controller :UIViewController?
 
-class ConnectionService: NSObject {
+class ConnectionService {
     
     var delegate:ConnnectionServiceDelegate?
 //    var manager :A
@@ -34,8 +34,27 @@ class ConnectionService: NSObject {
         controller = ViewController
     }
     //This is AFNetworking ReactiveCocoa
-    func getReactiveServiceCall(type: RequestType, url:String , payload:NSDictionary, token:String) -> Void {
-        Alamofire.request("www.google.com")
+    class func getReactiveServiceCall(type: RequestType, url:String , payload:NSDictionary, completion:@escaping CompletionHandler) -> Void {
+        
+        let url = URLS.baseURL + url
+        Alamofire.request(url).responseJSON { (response) in
+           
+            switch response.result {
+            case .success :
+                print("response received \(response.result.value.debugDescription)")
+                guard let data = response.data else {
+                    print("failed")
+                    return
+                }
+                completion(data)
+                print("response received \(data)")
+            case .failure :
+                print("failed")
+            }
+           
+//            completion(response.result)
+        }
+        
         
     }
 

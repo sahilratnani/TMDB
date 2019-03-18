@@ -7,7 +7,7 @@ target 'TMDB' do
 
   # Pods for TMDB
   pod 'Alamofire'
-  
+  pod 'SDWebImage', '~> 4.0'
 
 
 end
