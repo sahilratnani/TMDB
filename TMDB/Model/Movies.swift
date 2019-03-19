@@ -18,6 +18,7 @@ struct Movies: Decodable {
     let title: String
     let popularity: Float
     let posterPath: String
+    let backdropPath: String
     let originalLanguage: String
     let originalTitle: String
     let genreIds: [Int]
@@ -34,6 +35,7 @@ struct Movies: Decodable {
         case title
         case popularity
         case posterPath = "poster_path"
+        case backdropPath = "backdrop_path"
         case originalLanguage = "original_language"
         case originalTitle = "original_title"
         case genreIds = "genre_ids"
@@ -43,7 +45,7 @@ struct Movies: Decodable {
         
     }
     
-    init(voteCount: Int, id: Int, video: Bool, voteAverage: Float, title: String, popularity: Float, posterPath: String, originalLanguage: String, originalTitle: String, genreIds: [Int], adult: Bool, overview: String, releaseDate: String) {
+    init(voteCount: Int, id: Int, video: Bool, voteAverage: Float, title: String, popularity: Float, posterPath: String, backdropPath: String, originalLanguage: String, originalTitle: String, genreIds: [Int], adult: Bool, overview: String, releaseDate: String) {
         self.voteCount  =   voteCount
         self.id         = id
         self.video      = video
@@ -51,6 +53,7 @@ struct Movies: Decodable {
         self.title = title
         self.popularity = popularity
         self.posterPath = posterPath
+        self.backdropPath = backdropPath
         self.originalLanguage = originalLanguage
         self.originalTitle = originalTitle
         self.genreIds = genreIds
@@ -68,6 +71,7 @@ struct Movies: Decodable {
         let title = try container.decode(String.self, forKey: .title)
         let popularity = try container.decode(Float.self, forKey: .popularity)
         let posterPath = try container.decode(String.self, forKey: .posterPath)
+        let backdropPath = try container.decode(String.self, forKey: .backdropPath)
         let originalLanguage = try container.decode(String.self, forKey: .originalLanguage)
         let originalTitle = try container.decode(String.self, forKey: .originalTitle)
         let genreIds = try container.decode([Int].self, forKey: .genreIds)
@@ -75,6 +79,6 @@ struct Movies: Decodable {
         let overview = try container.decode(String.self, forKey: .overView)
         let releaseDate = try container.decode(String.self, forKey: .releaseDate)
         
-        self.init(voteCount: voteCount, id: id, video: video, voteAverage: voteAverage, title: title, popularity: popularity, posterPath: posterPath, originalLanguage: originalLanguage, originalTitle: originalTitle, genreIds: genreIds, adult: adult, overview: overview, releaseDate: releaseDate)
+        self.init(voteCount: voteCount, id: id, video: video, voteAverage: voteAverage, title: title, popularity: popularity, posterPath: posterPath,backdropPath: backdropPath, originalLanguage: originalLanguage, originalTitle: originalTitle, genreIds: genreIds, adult: adult, overview: overview, releaseDate: releaseDate)
     }
 }

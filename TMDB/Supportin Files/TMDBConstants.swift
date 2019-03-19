@@ -13,3 +13,11 @@ struct URLS {
     
     static let imageBaseURL = "https://image.tmdb.org/t/p/w500"
 }
+
+struct Keys {
+    static let apiKey = "722e727142324b59fe7a03f5206658a1"
+}
+
+struct ErrorMessage {
+    static let unknown = "Something went wrong. Please try again"
+}

@@ -1,22 +1,28 @@
 PODS:
   - Alamofire (4.8.1)
+  - NVActivityIndicatorView (4.6.1):
+    - NVActivityIndicatorView/Presenter (= 4.6.1)
+  - NVActivityIndicatorView/Presenter (4.6.1)
   - SDWebImage (4.4.4):
     - SDWebImage/Core (= 4.4.4)
   - SDWebImage/Core (4.4.4)
 
 DEPENDENCIES:
   - Alamofire
+  - NVActivityIndicatorView
   - SDWebImage (~> 4.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - NVActivityIndicatorView
     - SDWebImage
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
   SDWebImage: c00ec18ab25d10e5ffac109b0f78d1b4341c9691
 
-PODFILE CHECKSUM: 0baec99911ddc8f66316cb6d84a48655d5b45578
+PODFILE CHECKSUM: 041cf0dd15cb1070acca4521d9a86171cee2c7a7
 
 COCOAPODS: 1.5.3

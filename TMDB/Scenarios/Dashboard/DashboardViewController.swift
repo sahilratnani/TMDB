@@ -7,19 +7,39 @@
 //
 
 import UIKit
-
+import NVActivityIndicatorView
 class DashboardViewController: UIViewController {
 
-    private var viewModel: PopularMoviesViewModel!
+    private var viewModel: DashboardViewModel!
     
     @IBOutlet weak var dashboardCollectionView: UICollectionView!
+    @IBOutlet weak var sortButton: UIBarButtonItem!
+    
+    private let searchController: UISearchController
+
+    required init?(coder aDecoder: NSCoder) {
+        searchController = UISearchController(searchResultsController: searchResultViewController())
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.white
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        title = "Movie Browser"
         dashboardCollectionView.dataSource = self
-        viewModel = PopularMoviesViewModel(delegate: self)
-        viewModel.fetchPopularMovies()
+        dashboardCollectionView.prefetchDataSource = self
+        dashboardCollectionView.delegate = self
+        viewModel = DashboardViewModel(delegate: self)
+        viewModel.fetchMovies()
+    }
+    
+    
+    @IBAction func sortAction(_ sender: UIBarButtonItem) {
+        viewModel.toggleSort()
     }
     
 }
@@ -36,23 +56,32 @@ extension DashboardViewController: UICollectionViewDataSource {
         if isLoadingCell(for: indexPath) {
             cell.configure(with: .none)
         } else {
-            cell.configure(with: viewModel.moderator(at: indexPath.row))
+            cell.configure(with: viewModel.movie(at: indexPath.row))
         }
         return cell
     }
     
 }
 
+extension DashboardViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedMovie = viewModel.movie(at: indexPath.row)
+        let vc : MovieDetailsViewController = self.storyboard?.instantiateViewController(withIdentifier: MovieDetailsViewController.identifier) as! MovieDetailsViewController
+        vc.movie = selectedMovie
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
 extension DashboardViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         if indexPaths.contains(where: isLoadingCell) {
-            viewModel.fetchPopularMovies()
+            viewModel.fetchMovies()
         }
     }
     
 }
 
-extension DashboardViewController: PopularMoviesModelDelegate {
+extension DashboardViewController: DashboardViewModelDelegate {
     func onFetchCompleted(with newIndexPathsToReload: [IndexPath]?) {
         guard let newIndexPathsToReload = newIndexPathsToReload else {
             dashboardCollectionView.reloadData()
@@ -63,7 +92,9 @@ extension DashboardViewController: PopularMoviesModelDelegate {
     }
     
     func onFetchFailed(with reason: String) {
-        print("Failed to get data")
+        self.showAlert(title: "Warning", message: reason, actionTitle: "Retry", callback: {
+            self.viewModel.fetchMovies()
+        })
     }
 }
 

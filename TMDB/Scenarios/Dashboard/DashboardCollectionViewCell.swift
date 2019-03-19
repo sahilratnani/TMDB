@@ -19,17 +19,15 @@ class DashboardCollectionViewCell: UICollectionViewCell {
     func configure(with movie: Movies?) {
         if let movie = movie {
             let imageUrl = URL.init(string: URLS.imageBaseURL + movie.posterPath)
-            
-            let imageView = UIImageView()
+            let imageView = self.moviePosterImageView!
             imageView.sd_setImage(with: imageUrl, placeholderImage:#imageLiteral(resourceName: "placeHolderImage") , options: []) { (image, error, cacheType, url) in
-               
-                        self.moviePosterImageView.image = imageView.image
-                
             }
             moviewTitleLabel.text = movie.title
             ratingLabel.text = "\(movie.voteAverage)"
         } else {
-            
+            moviewTitleLabel.text = "Loading"
+            ratingLabel.text = "..."
+            moviePosterImageView.image = #imageLiteral(resourceName: "placeHolderImage")
         }
     }
 }
